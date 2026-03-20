@@ -42,4 +42,14 @@ public class CustomerController(ICustomerService customerService) : ControllerBa
 
         return Ok(new CustomerModelResponse() { IdCliente = customerId });
     }
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(GetAllCustomersModelResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllCustomers()
+    {
+        var customers = await customerService.GetAllCustomersAsync();
+
+        return Ok(new GetAllCustomersModelResponse() { Customers = customers });
+    }
 }

@@ -9,4 +9,10 @@ public class CustomerService : ICustomerService
     {
         return Task.FromResult("IdCustomer");
     }
+
+    public Task<List<Customer>> GetAllCustomersAsync()
+    {
+        var customers = new List<Customer>();
+        return Task.FromResult(customers);
+    }
 }
