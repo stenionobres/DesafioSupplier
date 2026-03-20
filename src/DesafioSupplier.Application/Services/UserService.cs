@@ -9,4 +9,9 @@ public class UserService : IUserService
     {
         return Task.FromResult("");
     }
+
+    public Task<User> GetUserAsync(string email)
+    {
+        return Task.FromResult(new User() { Email = "", Senha = "" });
+    }
 }

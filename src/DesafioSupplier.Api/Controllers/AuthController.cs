@@ -9,7 +9,7 @@ namespace DesafioSupplier.Api.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController(IUserService userService) : ControllerBase
+public class AuthController(IUserService userService, ISignInService signInService) : ControllerBase
 {
     [HttpPost("signup")]
     [ProducesResponseType(typeof(UserModelResponse), StatusCodes.Status200OK)]
@@ -38,8 +38,22 @@ public class AuthController(IUserService userService) : ControllerBase
     }
 
     [HttpPost("signin")]
-    public void Signin()
+    [ProducesResponseType(typeof(SignInModelResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Signin(SignInModelRequest signInModelRequest)
     {
+        if (string.IsNullOrEmpty(signInModelRequest.Email))
+        {
+            return BadRequest(new ErroModelResponse() { DetalheErro = "Email é um campo obrigatório" });
+        }
 
+        if (string.IsNullOrEmpty(signInModelRequest.Senha))
+        {
+            return BadRequest(new ErroModelResponse() { DetalheErro = "Senha é um campo obrigatório" });
+        }
+
+        var token = await signInService.SignIn(signInModelRequest.Email, signInModelRequest.Senha);
+
+        return Ok(new SignInModelResponse() { Token = token });
     }
 }
