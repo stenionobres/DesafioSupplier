@@ -12,7 +12,6 @@ namespace DesafioSupplier.Api.Controllers;
 public class AuthController(IUserService userService) : ControllerBase
 {
     [HttpPost("signup")]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(UserModelResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signup(UserModelRequest userModelRequest)
