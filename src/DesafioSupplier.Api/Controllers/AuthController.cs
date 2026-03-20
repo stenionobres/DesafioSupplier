@@ -7,7 +7,7 @@ using DesafioSupplier.Domain.Interfaces.Services;
 
 namespace DesafioSupplier.Api.Controllers;
 
-[Route("api/auth")]
+[Route("api/")]
 [ApiController]
 public class AuthController(IUserService userService, ISignInService signInService) : ControllerBase
 {
