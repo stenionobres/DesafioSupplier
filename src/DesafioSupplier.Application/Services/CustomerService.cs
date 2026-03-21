@@ -1,18 +1,24 @@
 ﻿using DesafioSupplier.Domain.Entities;
 using DesafioSupplier.Domain.Interfaces.Services;
+using DesafioSupplier.Domain.Interfaces.Repositories;
 
 namespace DesafioSupplier.Application.Services;
 
-public class CustomerService : ICustomerService
+public class CustomerService(ICustomerRepository customerRepository) : ICustomerService
 {
-    public Task<string> SaveCustomerAsync(Customer customer)
+    public async Task<string> SaveCustomerAsync(Customer customer)
     {
-        return Task.FromResult("IdCustomer");
+        customer.Id = Guid.NewGuid().ToString();
+
+        await customerRepository.SaveCustomerAsync(customer);
+        
+        return customer.Id;
     }
 
-    public Task<List<Customer>> GetAllCustomersAsync()
+    public async Task<List<Customer>> GetAllCustomersAsync()
     {
-        var customers = new List<Customer>();
-        return Task.FromResult(customers);
+        var customers = await customerRepository.GetAllCustomersAsync();
+        
+        return customers;
     }
 }

@@ -36,9 +36,10 @@ public class CustomerController(ICustomerService customerService) : ControllerBa
 
         var customer = new Customer()
         {
-            Nome = customerModelRequest.Nome,
+            Id = string.Empty,
+            Name = customerModelRequest.Nome,
             Cpf = customerModelRequest.Cpf,
-            ValorLimite = customerModelRequest.ValorLimite
+            LimitValue = customerModelRequest.ValorLimite
         };
         var customerId = await customerService.SaveCustomerAsync(customer);
 
