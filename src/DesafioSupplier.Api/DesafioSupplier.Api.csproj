@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DesafioSupplier.Application\DesafioSupplier.Application.csproj" />
     <ProjectReference Include="..\DesafioSupplier.Domain\DesafioSupplier.Domain.csproj" />
+    <ProjectReference Include="..\DesafioSupplier.ServicesAsync\DesafioSupplier.ServicesAsync.csproj" />
   </ItemGroup>
 
 </Project>

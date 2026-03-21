@@ -1,4 +1,5 @@
 using DesafioSupplier.Application.Services;
+using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.Domain.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddScoped<ISignInService, SignInService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+
+builder.Services.AddHostedService<TransactionConsumer>();
 
 var app = builder.Build();
 
