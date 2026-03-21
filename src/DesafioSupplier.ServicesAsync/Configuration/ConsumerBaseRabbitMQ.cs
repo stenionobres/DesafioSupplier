@@ -2,20 +2,23 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace DesafioSupplier.ServicesAsync.Configuration;
 
 public abstract class ConsumerBaseRabbitMQ : BackgroundService
 {
 	private readonly string _queueName;
-	private IConnection? _connection;
+	private readonly IOptions<ServerSettingsRabbitMQ> _rabbitServerSettings;
+    private IConnection? _connection;
 	private IChannel? _channel;
 
     protected abstract Task ConsumeMessage(string message); 
 
-	protected ConsumerBaseRabbitMQ(string queueName)
+	protected ConsumerBaseRabbitMQ(string queueName, IOptions<ServerSettingsRabbitMQ> rabbitServerSettings)
 	{
         _queueName = queueName;
+		_rabbitServerSettings = rabbitServerSettings;
     }
 
     public override async Task StartAsync(CancellationToken cancellationToken)
@@ -24,10 +27,10 @@ public abstract class ConsumerBaseRabbitMQ : BackgroundService
 		{
 			var factory = new ConnectionFactory
 			{
-				HostName = "",
-				UserName = "",
-				Password = "",
-				VirtualHost = "",
+				HostName = _rabbitServerSettings.Value.Host,
+				UserName = _rabbitServerSettings.Value.User,
+				Password = _rabbitServerSettings.Value.Password,
+				VirtualHost = _rabbitServerSettings.Value.VirtualHost,
 				RequestedConnectionTimeout = TimeSpan.FromMinutes(30),
 			};
 

@@ -1,6 +1,7 @@
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.Domain.Interfaces.Services;
+using DesafioSupplier.ServicesAsync.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddScoped<ISignInService, SignInService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+
+builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
 
 builder.Services.AddHostedService<TransactionConsumer>();
 
