@@ -2,6 +2,7 @@
 using DesafioSupplier.Api.Shared;
 using DesafioSupplier.Domain.Entities;
 using DesafioSupplier.Api.ModelRequests;
+using Microsoft.AspNetCore.Authorization;
 using DesafioSupplier.Api.ModelResponses;
 using DesafioSupplier.Domain.Interfaces.Services;
 
@@ -12,6 +13,7 @@ namespace DesafioSupplier.Api.Controllers;
 public class AuthController(IUserService userService, ISignInService signInService) : ControllerBase
 {
     [HttpPost("signup")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(UserModelResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signup(UserModelRequest userModelRequest)
@@ -39,6 +41,7 @@ public class AuthController(IUserService userService, ISignInService signInServi
     }
 
     [HttpPost("signin")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(SignInModelResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signin(SignInModelRequest signInModelRequest)
