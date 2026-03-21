@@ -14,5 +14,22 @@ public static class SqLiteDbInitializer
                 Password TEXT NOT NULL
             );
         ");
+
+        db.Execute(@"
+            CREATE TABLE Customers (
+                Id TEXT PRIMARY KEY NOT NULL,
+                Name TEXT NOT NULL,
+                Cpf TEXT NOT NULL,
+                LimitValue REAL NOT NULL
+            );
+        ");
+
+        db.Execute(@"
+            CREATE TABLE Transactions (
+                Id TEXT PRIMARY KEY NOT NULL,
+                CustomerId TEXT NOT NULL,
+                Amount REAL NOT NULL
+            );
+        ");
     }
 }
