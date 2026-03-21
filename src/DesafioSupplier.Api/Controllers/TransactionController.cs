@@ -2,6 +2,7 @@
 using DesafioSupplier.Api.Shared;
 using DesafioSupplier.Api.ModelRequests;
 using DesafioSupplier.Api.ModelResponses;
+using Microsoft.AspNetCore.Authorization;
 using DesafioSupplier.Domain.Interfaces.Services;
 
 namespace DesafioSupplier.Api.Controllers;
@@ -11,6 +12,7 @@ namespace DesafioSupplier.Api.Controllers;
 public class TransactionController(ITransactionService transactionService) : ControllerBase
 {
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(TransactionModelResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(TransactionDeniedModelResponse), StatusCodes.Status400BadRequest)]

@@ -1,9 +1,12 @@
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using DesafioSupplier.Application.Auth;
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.ServicesAsync.Publishers;
 using DesafioSupplier.Domain.Interfaces.Services;
 using DesafioSupplier.ServicesAsync.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,39 @@ builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthC
 builder.Services.AddSingleton<TransactionPublisher>();
 builder.Services.AddHostedService<TransactionConsumer>();
 
+/**************************** Autorizacao *********************************/
+
+var authSection = builder.Configuration.GetSection("AuthConfig");
+
+var key = Encoding.ASCII.GetBytes(authSection["SecretKey"] ?? string.Empty);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+
+        ValidIssuer = authSection["Issuer"] ?? string.Empty,
+        ValidAudience = authSection["Audience"] ?? string.Empty,
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
+
+/**************************************************************************/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +73,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
