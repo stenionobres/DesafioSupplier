@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DesafioSupplier.Domain\DesafioSupplier.Domain.csproj" />
     <ProjectReference Include="..\DesafioSupplier.ServicesAsync\DesafioSupplier.ServicesAsync.csproj" />
   </ItemGroup>

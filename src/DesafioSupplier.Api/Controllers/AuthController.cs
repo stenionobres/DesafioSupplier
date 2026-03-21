@@ -28,6 +28,7 @@ public class AuthController(IUserService userService, ISignInService signInServi
         
         var user = new User()
         {
+            Id = string.Empty,
             Email = userModelRequest.Email,
             Senha = userModelRequest.Senha
         };

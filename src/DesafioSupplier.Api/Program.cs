@@ -1,3 +1,4 @@
+using DesafioSupplier.Application.Auth;
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.ServicesAsync.Publishers;
@@ -20,6 +21,7 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
+builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthConfig"));
 
 builder.Services.AddSingleton<TransactionPublisher>();
 builder.Services.AddHostedService<TransactionConsumer>();
