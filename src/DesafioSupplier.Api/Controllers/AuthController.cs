@@ -32,7 +32,7 @@ public class AuthController(IUserService userService, ISignInService signInServi
         {
             Id = string.Empty,
             Email = userModelRequest.Email,
-            Senha = userModelRequest.Senha
+            Password = userModelRequest.Senha
         };
 
         var userId = await userService.SaveUserAsync(user);

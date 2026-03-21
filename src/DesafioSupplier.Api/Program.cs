@@ -1,14 +1,19 @@
+using System.Data;
 using System.Text;
+using Microsoft.Data.Sqlite;
 using Microsoft.OpenApi.Models;
 using DesafioSupplier.Api.Shared;
+using DesafioSupplier.Persistence;
 using Microsoft.IdentityModel.Tokens;
 using DesafioSupplier.Application.Auth;
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.ServicesAsync.Publishers;
+using DesafioSupplier.Persistence.Configuration;
 using DesafioSupplier.Domain.Interfaces.Services;
 using DesafioSupplier.ServicesAsync.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using DesafioSupplier.Domain.Interfaces.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +43,7 @@ builder.Services.AddScoped<ISignInService, SignInService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthConfig"));
@@ -78,6 +84,11 @@ builder.Services.AddAuthorization();
 
 /**************************************************************************/
 
+var connection = new SqliteConnection("DataSource=:memory:");
+connection.Open();
+
+builder.Services.AddSingleton<IDbConnection>(connection);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -93,5 +104,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<IDbConnection>();
+    SqLiteDbInitializer.Initialize(db);
+}
 
 app.Run();

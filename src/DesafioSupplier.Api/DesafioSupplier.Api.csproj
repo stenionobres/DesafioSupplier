@@ -9,12 +9,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.25" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DesafioSupplier.Application\DesafioSupplier.Application.csproj" />
     <ProjectReference Include="..\DesafioSupplier.Domain\DesafioSupplier.Domain.csproj" />
+    <ProjectReference Include="..\DesafioSupplier.Persistence\DesafioSupplier.Persistence.csproj" />
     <ProjectReference Include="..\DesafioSupplier.ServicesAsync\DesafioSupplier.ServicesAsync.csproj" />
   </ItemGroup>
 

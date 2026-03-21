@@ -1,17 +1,23 @@
 ﻿using DesafioSupplier.Domain.Entities;
 using DesafioSupplier.Domain.Interfaces.Services;
+using DesafioSupplier.Domain.Interfaces.Repositories;
 
 namespace DesafioSupplier.Application.Services;
 
-public class UserService : IUserService
+public class UserService(IUserRepository userRepository) : IUserService
 {
-    public Task<string> SaveUserAsync(User user)
+    public async Task<string> SaveUserAsync(User user)
     {
-        return Task.FromResult("");
+        user.Id = Guid.NewGuid().ToString();
+        await userRepository.SaveUserAsync(user);
+
+        return user.Id;
     }
 
     public Task<User> GetUserAsync(string email)
     {
-        return Task.FromResult(new User() { Email = "", Senha = "" });
+        var user = userRepository.GetUserAsync(email);
+        
+        return user;
     }
 }
