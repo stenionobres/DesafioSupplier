@@ -1,14 +1,21 @@
-﻿using DesafioSupplier.Domain.Interfaces.Services;
+﻿using DesafioSupplier.Application.Auth;
+using DesafioSupplier.Domain.Interfaces.Services;
 
 namespace DesafioSupplier.Application.Services;
 
-public class SignInService(IUserService userService, ITokenService tokenService) : ISignInService
+public class SignInService(IUserService userService, PasswordHasher passwordHasher, ITokenService tokenService) : ISignInService
 {
     public async Task<string> SignIn(string email, string password)
     {
         var user = await userService.GetUserAsync(email);
-        var token = await tokenService.GetTokenAsync(user);
 
-        return token;
+        if (passwordHasher.VerifyPassword(password, user.Password))
+        {
+            var token = await tokenService.GetTokenAsync(user);
+
+            return token;
+        }
+
+        throw new ApplicationException("Senha inválida");
     }
 }

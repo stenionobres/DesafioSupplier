@@ -18,26 +18,33 @@ public class AuthController(IUserService userService, ISignInService signInServi
     [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signup(UserModelRequest userModelRequest)
     {
-        if (string.IsNullOrEmpty(userModelRequest.Email))
+        try
         {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "Email é um campo obrigatório" });
+            if (string.IsNullOrEmpty(userModelRequest.Email))
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "Email é um campo obrigatório" });
+            }
+
+            if (string.IsNullOrEmpty(userModelRequest.Senha))
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "Senha é um campo obrigatório" });
+            }
+
+            var user = new User()
+            {
+                Id = string.Empty,
+                Email = userModelRequest.Email,
+                Password = userModelRequest.Senha
+            };
+
+            var userId = await userService.SaveUserAsync(user);
+
+            return Ok(new UserModelResponse() { Id = userId });
         }
-
-        if (string.IsNullOrEmpty(userModelRequest.Senha))
+        catch (ApplicationException ex)
         {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "Senha é um campo obrigatório" });
+            return BadRequest(new ErroModelResponse() { DetalheErro = ex.Message });
         }
-        
-        var user = new User()
-        {
-            Id = string.Empty,
-            Email = userModelRequest.Email,
-            Password = userModelRequest.Senha
-        };
-
-        var userId = await userService.SaveUserAsync(user);
-
-        return Ok(new UserModelResponse() { Id = userId });
     }
 
     [HttpPost("signin")]
@@ -46,18 +53,25 @@ public class AuthController(IUserService userService, ISignInService signInServi
     [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signin(SignInModelRequest signInModelRequest)
     {
-        if (string.IsNullOrEmpty(signInModelRequest.Email))
+        try
         {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "Email é um campo obrigatório" });
-        }
+            if (string.IsNullOrEmpty(signInModelRequest.Email))
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "Email é um campo obrigatório" });
+            }
 
-        if (string.IsNullOrEmpty(signInModelRequest.Senha))
+            if (string.IsNullOrEmpty(signInModelRequest.Senha))
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "Senha é um campo obrigatório" });
+            }
+
+            var token = await signInService.SignIn(signInModelRequest.Email, signInModelRequest.Senha);
+
+            return Ok(new SignInModelResponse() { Token = token });
+        }
+        catch (ApplicationException ex)
         {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "Senha é um campo obrigatório" });
+            return BadRequest(new ErroModelResponse() { DetalheErro = ex.Message });
         }
-
-        var token = await signInService.SignIn(signInModelRequest.Email, signInModelRequest.Senha);
-
-        return Ok(new SignInModelResponse() { Token = token });
     }
 }

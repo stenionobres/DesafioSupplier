@@ -44,6 +44,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<PasswordHasher>();
 
 builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthConfig"));
