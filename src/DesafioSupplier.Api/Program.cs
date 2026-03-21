@@ -1,5 +1,6 @@
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.ServicesAsync.Consumers;
+using DesafioSupplier.ServicesAsync.Publishers;
 using DesafioSupplier.Domain.Interfaces.Services;
 using DesafioSupplier.ServicesAsync.Configuration;
 
@@ -20,6 +21,7 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
 
+builder.Services.AddSingleton<TransactionPublisher>();
 builder.Services.AddHostedService<TransactionConsumer>();
 
 var app = builder.Build();
