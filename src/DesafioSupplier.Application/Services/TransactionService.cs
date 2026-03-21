@@ -1,11 +1,14 @@
-﻿using DesafioSupplier.Domain.Interfaces.Services;
+﻿using DesafioSupplier.ServicesAsync.Publishers;
+using DesafioSupplier.Domain.Interfaces.Services;
 
 namespace DesafioSupplier.Application.Services;
 
-public class TransactionService : ITransactionService
+public class TransactionService(TransactionPublisher transactionPublisher) : ITransactionService
 {
-    public Task<string> PerformTransaction(string customerId, decimal amount)
+    public async Task<string> PerformTransaction(string customerId, decimal amount)
     {
-        return Task.FromResult("TransactionOk");
+        await transactionPublisher.PublishAsync(new { customerId, amount });
+
+        return "TransactionOk";
     }
 }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DesafioSupplier.Domain\DesafioSupplier.Domain.csproj" />
+    <ProjectReference Include="..\DesafioSupplier.ServicesAsync\DesafioSupplier.ServicesAsync.csproj" />
   </ItemGroup>
 
 </Project>
