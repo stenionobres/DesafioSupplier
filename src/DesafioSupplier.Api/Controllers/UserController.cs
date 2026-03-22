@@ -10,7 +10,7 @@ namespace DesafioSupplier.Api.Controllers;
 
 [Route("api/")]
 [ApiController]
-public class AuthController(IUserService userService, ISignInService signInService) : ControllerBase
+public class UserController(IUserService userService, ISignInService signInService) : ControllerBase
 {
     [HttpPost("signup")]
     [AllowAnonymous]
