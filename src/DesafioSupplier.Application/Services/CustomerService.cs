@@ -16,7 +16,7 @@ public class CustomerService(IMemoryCache memoryCache, ICustomerRepository custo
         var savedCustomer = await customerRepository.GetCustomerByCpfAsync(customer.Cpf);
 
         if (savedCustomer != null)
-            throw new ApplicationException("Cliente já existe com esse Cpf");
+            throw new ApplicationException("Já existe cliente com esse Cpf");
 
         customer.Id = Guid.NewGuid().ToString();
 
