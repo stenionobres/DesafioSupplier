@@ -8,4 +8,5 @@ public interface ICustomerRepository
     Task<Customer> GetCustomerByIdAsync(string customerId);
     Task SaveCustomerAsync(Customer customer);
     Task<List<Customer>> GetAllCustomersAsync();
+    Task UpdateLimit(string customerId, decimal newLimit);
 }

@@ -21,6 +21,10 @@ public class TransactionService(ICustomerRepository customerRepository,
 
         transaction.Id = Guid.NewGuid().ToString();
         await transactionRepository.SaveTransactionAsync(transaction);
+        
+        var newLimit = savedCustomer.LimitValue - transaction.Amount;
+        await customerRepository.UpdateLimit(savedCustomer.Id, newLimit);
+
         await transactionPublisher.PublishAsync(new { transaction.CustomerId, transaction.Amount });
 
         return transaction.Id;

@@ -37,4 +37,11 @@ public class CustomerRepository(IDbConnection dbConnection) : ICustomerRepositor
 
         return customersResult.ToList();
     }
+
+    public async Task UpdateLimit(string customerId, decimal newLimit)
+    {
+        var sql = "UPDATE Customers SET LimitValue = @NewLimitValue WHERE Id = @Id";
+
+        await dbConnection.ExecuteAsync(sql, new { Id = customerId, NewLimitValue = newLimit });
+    }
 }
