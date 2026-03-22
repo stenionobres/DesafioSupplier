@@ -3,18 +3,17 @@ using System.Text;
 using Microsoft.Data.Sqlite;
 using Microsoft.OpenApi.Models;
 using DesafioSupplier.Api.Shared;
-using DesafioSupplier.Persistence;
 using Microsoft.IdentityModel.Tokens;
 using DesafioSupplier.Application.Auth;
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.ServicesAsync.Publishers;
+using DesafioSupplier.Persistence.Repositories;
 using DesafioSupplier.Persistence.Configuration;
 using DesafioSupplier.Domain.Interfaces.Services;
 using DesafioSupplier.ServicesAsync.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DesafioSupplier.Domain.Interfaces.Repositories;
-using DesafioSupplier.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -3,7 +3,7 @@ using System.Data;
 using DesafioSupplier.Domain.Entities;
 using DesafioSupplier.Domain.Interfaces.Repositories;
 
-namespace DesafioSupplier.Persistence;
+namespace DesafioSupplier.Persistence.Repositories;
 
 public class UserRepository(IDbConnection dbConnection) : IUserRepository
 {
