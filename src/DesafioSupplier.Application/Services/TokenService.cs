@@ -13,7 +13,7 @@ public class TokenService(IOptions<AuthSettings> authSettings) : ITokenService
 {
     public Task<string> GetTokenAsync(User user)
     {
-        var expirationTime = DateTime.UtcNow.AddHours(1);
+        var expirationTime = DateTime.UtcNow.AddHours(authSettings.Value.TokenDurationInHours);
 
         var claims = new[]
         {
