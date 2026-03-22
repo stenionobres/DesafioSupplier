@@ -8,11 +8,12 @@ using DesafioSupplier.Application.Auth;
 using DesafioSupplier.Application.Services;
 using DesafioSupplier.Domain.Interfaces.Auth;
 using DesafioSupplier.ServicesAsync.Consumers;
-using DesafioSupplier.ServicesAsync.Publishers;
 using DesafioSupplier.Persistence.Repositories;
+using DesafioSupplier.ServicesAsync.Publishers;
 using DesafioSupplier.Persistence.Configuration;
 using DesafioSupplier.Domain.Interfaces.Services;
 using DesafioSupplier.ServicesAsync.Configuration;
+using DesafioSupplier.Domain.Interfaces.Publisher;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DesafioSupplier.Domain.Interfaces.Repositories;
 
@@ -52,7 +53,7 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthConfig"));
 
-builder.Services.AddSingleton<TransactionPublisher>();
+builder.Services.AddScoped<IPublisher, TransactionPublisher>();
 builder.Services.AddHostedService<TransactionConsumer>();
 
 /**************************** Autorizacao *********************************/

@@ -1,11 +1,12 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
+using DesafioSupplier.Domain.Interfaces.Publisher;
 using DesafioSupplier.ServicesAsync.Configuration;
 
 namespace DesafioSupplier.ServicesAsync.Publishers;
 
-public class TransactionPublisher : PublisherBaseRabbitMQ
+public class TransactionPublisher : PublisherBaseRabbitMQ, IPublisher
 {
     private readonly string _queueName;
 

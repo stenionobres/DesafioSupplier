@@ -1,13 +1,13 @@
 ﻿using DesafioSupplier.Domain.Entities;
-using DesafioSupplier.ServicesAsync.Publishers;
 using DesafioSupplier.Domain.Interfaces.Services;
+using DesafioSupplier.Domain.Interfaces.Publisher;
 using DesafioSupplier.Domain.Interfaces.Repositories;
 
 namespace DesafioSupplier.Application.Services;
 
 public class TransactionService(ICustomerRepository customerRepository, 
                                 ITransactionRepository transactionRepository, 
-                                TransactionPublisher transactionPublisher) : ITransactionService
+                                IPublisher transactionPublisher) : ITransactionService
 {
     public async Task<string> PerformTransactionAsync(Transaction transaction)
     {
