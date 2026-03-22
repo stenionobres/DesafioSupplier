@@ -31,5 +31,15 @@ public static class SqLiteDbInitializer
                 Amount REAL NOT NULL
             );
         ");
+        
+        db.Execute(@"
+            INSERT INTO Users (Id, Email, Password) 
+            VALUES ('0952ee8d-69f1-4a85-8572-faf5856fde4e', 'email@example.com', 'JGGuYAhZ0y9FryuJdfkRWnaRNP+Xv1vDlrTQ2SJzYJnwtlWSXSNHW6M5bMFowGSW')
+        ");
+
+        db.Execute(@"
+            INSERT INTO Customers (Id, Name, Cpf, LimitValue) 
+            VALUES ('d61ead45-a8f6-4dd9-8ecf-ca5acda0abfc', 'Joao da Silva', '74709439001', 20)
+        ");
     }
 }
