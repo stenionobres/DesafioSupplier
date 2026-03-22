@@ -7,7 +7,7 @@ namespace DesafioSupplier.Persistence.Repositories;
 
 public class CustomerRepository(IDbConnection dbConnection) : ICustomerRepository
 {
-    public async Task<Customer> GetCustomerAsync(string cpf)
+    public async Task<Customer> GetCustomerByCpfAsync(string cpf)
     {
         var sql = "SELECT Id, Name, Cpf, LimitValue FROM Customers WHERE Cpf = @Cpf";
         var customersResult = await dbConnection.QueryAsync<Customer>(sql, new { Cpf = cpf });

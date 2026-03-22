@@ -13,7 +13,7 @@ public class CustomerService(IMemoryCache memoryCache, ICustomerRepository custo
 
     public async Task<string> SaveCustomerAsync(Customer customer)
     {
-        var savedCustomer = await customerRepository.GetCustomerAsync(customer.Cpf);
+        var savedCustomer = await customerRepository.GetCustomerByCpfAsync(customer.Cpf);
 
         if (savedCustomer != null)
             throw new ApplicationException("Cliente já existe com esse Cpf");

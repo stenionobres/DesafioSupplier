@@ -4,7 +4,7 @@ namespace DesafioSupplier.Domain.Interfaces.Repositories;
 
 public interface ICustomerRepository
 {
-    Task<Customer> GetCustomerAsync(string cpf);
+    Task<Customer> GetCustomerByCpfAsync(string cpf);
     Task SaveCustomerAsync(Customer customer);
     Task<List<Customer>> GetAllCustomersAsync();
 }
