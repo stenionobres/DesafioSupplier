@@ -9,6 +9,9 @@ public class SignInService(IUserService userService, PasswordHasher passwordHash
     {
         var user = await userService.GetUserAsync(email);
 
+        if (user == null)
+            throw new ApplicationException("Usuário não encontrado");
+
         if (passwordHasher.VerifyPassword(password, user.Password))
         {
             var token = await tokenService.GetTokenAsync(user);
