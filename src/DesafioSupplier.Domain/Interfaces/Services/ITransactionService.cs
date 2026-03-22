@@ -1,6 +1,8 @@
-﻿namespace DesafioSupplier.Domain.Interfaces.Services;
+﻿using DesafioSupplier.Domain.Entities;
+
+namespace DesafioSupplier.Domain.Interfaces.Services;
 
 public interface ITransactionService
 {
-    Task<string> PerformTransaction(string customerId, decimal amount);
+    Task<string> PerformTransactionAsync(Transaction transaction);
 }

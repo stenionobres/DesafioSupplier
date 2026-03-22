@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DesafioSupplier.Api.Shared;
+using DesafioSupplier.Domain.Entities;
 using DesafioSupplier.Api.ModelRequests;
 using DesafioSupplier.Api.ModelResponses;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,8 @@ public class TransactionController(ITransactionService transactionService) : Con
             return BadRequest(new ErroModelResponse() { DetalheErro = "ValorSimulacao precisa ser maior que zero" });
         }
 
-        var transactionId = await transactionService.PerformTransaction(transactionModelRequest.IdCliente, transactionModelRequest.ValorSimulacao);
+        var transaction = new Transaction() { Id = string.Empty, CustomerId = transactionModelRequest.IdCliente, Amount = transactionModelRequest.ValorSimulacao };
+        var transactionId = await transactionService.PerformTransactionAsync(transaction);
 
         return Ok(new TransactionModelResponse() { IdTransacao = transactionId });
     }
