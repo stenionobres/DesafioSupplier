@@ -16,4 +16,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DesafioSupplier.Application\DesafioSupplier.Application.csproj" />
+    <ProjectReference Include="..\DesafioSupplier.Domain\DesafioSupplier.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
