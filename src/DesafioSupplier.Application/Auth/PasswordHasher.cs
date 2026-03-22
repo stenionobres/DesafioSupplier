@@ -1,15 +1,16 @@
 ﻿using System.Security.Cryptography;
+using DesafioSupplier.Domain.Interfaces.Auth;
 
 namespace DesafioSupplier.Application.Auth;
 
 //hash with salt
-public class PasswordHasher
+public class PasswordHasher : IPasswordHasher
 {
     private const int SaltSize = 16; // 128 bits
     private const int KeySize = 32;  // 256 bits
     private const int Iterations = 10000;
 
-    public string HashPassword(string password)
+    public Task<string> HashPasswordAsync(string password)
     {
         using var algorithm = new Rfc2898DeriveBytes(
             password,
@@ -19,12 +20,12 @@ public class PasswordHasher
 
         var salt = algorithm.Salt;
         var key = algorithm.GetBytes(KeySize);
+        var hash = Convert.ToBase64String(Combine(salt, key));
 
-        return Convert.ToBase64String(
-            Combine(salt, key));
+        return Task.FromResult(hash);
     }
 
-    public bool VerifyPassword(string password, string hash)
+    public Task<bool> VerifyPasswordAsync(string password, string hash)
     {
         var bytes = Convert.FromBase64String(hash);
 
@@ -41,8 +42,9 @@ public class PasswordHasher
             HashAlgorithmName.SHA256);
 
         var keyToCheck = algorithm.GetBytes(KeySize);
+        var passwordIsValid = CryptographicOperations.FixedTimeEquals(key, keyToCheck);
 
-        return CryptographicOperations.FixedTimeEquals(key, keyToCheck);
+        return Task.FromResult(passwordIsValid);
     }
 
     private byte[] Combine(byte[] a, byte[] b)

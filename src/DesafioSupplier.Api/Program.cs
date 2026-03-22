@@ -6,6 +6,7 @@ using DesafioSupplier.Api.Shared;
 using Microsoft.IdentityModel.Tokens;
 using DesafioSupplier.Application.Auth;
 using DesafioSupplier.Application.Services;
+using DesafioSupplier.Domain.Interfaces.Auth;
 using DesafioSupplier.ServicesAsync.Consumers;
 using DesafioSupplier.ServicesAsync.Publishers;
 using DesafioSupplier.Persistence.Repositories;
@@ -46,7 +47,7 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-builder.Services.AddSingleton<PasswordHasher>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.Configure<ServerSettingsRabbitMQ>(builder.Configuration.GetSection("RabbitServerConfig"));
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthConfig"));
