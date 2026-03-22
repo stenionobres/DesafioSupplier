@@ -92,6 +92,8 @@ connection.Open();
 
 builder.Services.AddSingleton<IDbConnection>(connection);
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
