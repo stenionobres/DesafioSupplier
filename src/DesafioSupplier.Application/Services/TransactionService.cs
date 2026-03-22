@@ -20,12 +20,9 @@ public class TransactionService(ICustomerRepository customerRepository,
             throw new ApplicationException("Valor solicitado é superior ao limite do cliente");
 
         transaction.Id = Guid.NewGuid().ToString();
-        await transactionRepository.SaveTransactionAsync(transaction);
         
-        var newLimit = savedCustomer.LimitValue - transaction.Amount;
-        await customerRepository.UpdateLimit(savedCustomer.Id, newLimit);
-
-        await transactionPublisher.PublishAsync(new { transaction.CustomerId, transaction.Amount });
+        await transactionRepository.SaveTransactionAsync(transaction);
+        await transactionPublisher.PublishAsync(transaction);
 
         return transaction.Id;
     }

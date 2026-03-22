@@ -37,4 +37,19 @@ public class CustomerService(IMemoryCache memoryCache, ICustomerRepository custo
         
         return customers!;
     }
+
+    public async Task UpdateLimit(string customerId, decimal debitAmount)
+    {
+        var savedCustomer = await customerRepository.GetCustomerByIdAsync(customerId);
+
+        if (savedCustomer == null)
+            throw new ApplicationException("Não existe cliente com esse Id");
+
+        if (debitAmount > savedCustomer.LimitValue)
+            throw new ApplicationException("Valor solicitado é superior ao limite do cliente");
+
+        var newLimit = savedCustomer.LimitValue - debitAmount;
+        
+        await customerRepository.UpdateLimit(savedCustomer.Id, newLimit);
+    }
 }
