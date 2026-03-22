@@ -19,31 +19,38 @@ public class CustomerController(ICustomerService customerService) : ControllerBa
     [ProducesResponseType(typeof(ErroModelResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SaveCustomer(CustomerModelRequest customerModelRequest)
     {
-        if (string.IsNullOrEmpty(customerModelRequest.Nome))
+        try
         {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "Nome é um campo obrigatório" });
+            if (string.IsNullOrEmpty(customerModelRequest.Nome))
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "Nome é um campo obrigatório" });
+            }
+
+            if (string.IsNullOrEmpty(customerModelRequest.Cpf))
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "Cpf é um campo obrigatório" });
+            }
+
+            if (customerModelRequest.ValorLimite < 0)
+            {
+                return BadRequest(new ErroModelResponse() { DetalheErro = "ValorLimite não pode ser negativo" });
+            }
+
+            var customer = new Customer()
+            {
+                Id = string.Empty,
+                Name = customerModelRequest.Nome,
+                Cpf = customerModelRequest.Cpf,
+                LimitValue = customerModelRequest.ValorLimite
+            };
+            var customerId = await customerService.SaveCustomerAsync(customer);
+
+            return Ok(new CustomerModelResponse() { IdCliente = customerId });
         }
-
-        if (string.IsNullOrEmpty(customerModelRequest.Cpf))
+        catch (ApplicationException ex)
         {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "Cpf é um campo obrigatório" });
+            return BadRequest(new ErroModelResponse() { DetalheErro = ex.Message });
         }
-
-        if (customerModelRequest.ValorLimite < 0)
-        {
-            return BadRequest(new ErroModelResponse() { DetalheErro = "ValorLimite não pode ser negativo" });
-        }
-
-        var customer = new Customer()
-        {
-            Id = string.Empty,
-            Name = customerModelRequest.Nome,
-            Cpf = customerModelRequest.Cpf,
-            LimitValue = customerModelRequest.ValorLimite
-        };
-        var customerId = await customerService.SaveCustomerAsync(customer);
-
-        return Ok(new CustomerModelResponse() { IdCliente = customerId });
     }
 
     [HttpGet]
