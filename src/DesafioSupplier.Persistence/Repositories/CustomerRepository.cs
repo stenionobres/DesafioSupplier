@@ -15,6 +15,14 @@ public class CustomerRepository(IDbConnection dbConnection) : ICustomerRepositor
         return customersResult.FirstOrDefault()!;
     }
 
+    public async Task<Customer> GetCustomerByIdAsync(string customerId)
+    {
+        var sql = "SELECT Id, Name, Cpf, LimitValue FROM Customers WHERE Id = @Id";
+        var customersResult = await dbConnection.QueryAsync<Customer>(sql, new { Id = customerId });
+
+        return customersResult.FirstOrDefault()!;
+    }
+
     public async Task SaveCustomerAsync(Customer customer)
     {
         var sql = "INSERT INTO Customers (Id, Name, Cpf, LimitValue) VALUES (@Id, @Name, @Cpf, @LimitValue)";
